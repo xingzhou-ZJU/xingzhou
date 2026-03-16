@@ -1,0 +1,646 @@
+/**
+ * ============================================================
+ * 博客 - 主样式表
+ * ============================================================
+ * 配色方案 | 双栏主从布局 | 响应式设计
+ * ============================================================
+ */
+
+/* ==================== CSS 变量（全局样式控制核心）==================== */
+:root {
+  /* 【莫奈蓝白配色体系】修改以下值可全局替换博客主色调 */
+  --color-primary: #E6F4FF;        /* 主色浅版（标签/按钮背景）→ 修改：所有浅蓝背景区域变色 */
+  --color-primary-light: #D6E8FF;  /* 主色超浅版（hover背景）→ 修改：hover时的浅蓝背景变色 */
+  --color-accent: #8CB6E6;         /* 强调色（链接/按钮/标签文字）→ 修改：所有蓝色链接/按钮变色 */
+  --color-accent-dark: #73A6E6;    /* 强调色深版（hover链接）→ 修改：链接hover时的颜色 */
+  --color-background: #FCFDFF;     /* 页面背景色 → 修改：整个页面的底色 */
+  --color-background-alt: #FAFBFF; /* 页脚背景色 → 修改：页脚区域的底色 */
+  --color-card-bg: #FFFFFF;        /* 卡片背景色（文章/侧边栏）→ 修改：所有白色卡片的底色 */
+  --color-text-primary: #3D4A5C;   /* 主要文字色（标题）→ 修改：所有大标题的颜色 */
+  --color-text-secondary: #6B7A8F; /* 次要文字色（正文）→ 修改：正文/副标题的颜色 */
+  --color-text-light: #9AA5B6;     /* 浅文字色（元信息/日期）→ 修改：日期/阅读量等小字颜色 */
+  --color-border: #E8EEF5;         /* 边框色（导航栏底部）→ 修改：所有边框的颜色 */
+  --color-divider: #F0F5FA;        /* 分割线色（文章卡片内）→ 修改：卡片内分割线颜色 */
+
+  /* 【阴影效果】修改数值可调整阴影深浅/大小 */
+  --shadow-light: 0 2px 8px rgba(140, 182, 230, 0.1);    /* 轻阴影（卡片默认）→ 修改：卡片默认阴影深浅 */
+  --shadow-medium: 0 4px 16px rgba(140, 182, 230, 0.15); /* 中阴影（作者头像）→ 修改：头像阴影深浅 */
+  --shadow-hover: 0 8px 24px rgba(140, 182, 230, 0.2);   /* hover阴影（卡片悬浮）→ 修改：卡片悬浮时阴影大小 */
+
+  /* 【字体体系】修改可全局替换字体 */
+  --font-heading: "Noto Serif SC", "Source Han Serif SC", "STSong", "Georgia", serif; /* 标题字体 → 修改：所有标题的字体 */
+  --font-body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;          /* 正文字体 → 修改：所有正文的字体 */
+
+  /* 【字号】修改可全局调整文字大小（rem是相对单位，1rem=16px） */
+  --font-size-base: 16px;    /* 基础字号 → 修改：整个页面的基准文字大小 */
+  --font-size-h1: 2.5rem;    /* 一级标题 → 修改：h1标签（大标题）大小 */
+  --font-size-h2: 2rem;      /* 二级标题 → 修改：h2标签（板块标题）大小 */
+  --font-size-h3: 1.5rem;    /* 三级标题 → 修改：h3标签（文章标题）大小 */
+  --font-size-h4: 1.25rem;   /* 四级标题 → 修改：h4标签（侧边栏标题）大小 */
+  --font-size-small: 0.875rem;/* 小字号 → 修改：日期/元信息等小字大小 */
+
+  /* 【行高】修改可调整文字行间距 */
+  --line-height-base: 1.9;    /* 正文行高 → 修改：正文的行间距（越大越松散） */
+  --line-height-heading: 1.4; /* 标题行高 → 修改：标题的行间距 */
+
+  /* 【间距体系】修改可全局调整模块间距（rem=16px） */
+  --spacing-xs: 0.25rem; /* 超小间距（标签内边距）→ 修改：极小的内/外边距 */
+  --spacing-sm: 0.5rem;  /* 小间距（按钮内边距）→ 修改：小范围的内/外边距 */
+  --spacing-md: 1rem;    /* 中等间距（段落间距）→ 修改：段落/模块间的基础间距 */
+  --spacing-lg: 2rem;    /* 大间距（卡片内边距）→ 修改：大模块的内/外边距 */
+  --spacing-xl: 4rem;    /* 超大间距（双栏间距）→ 修改：主栏和侧边栏的间距 */
+
+  /* 【布局尺寸】修改可调整页面整体布局 */
+  --container-max-width: 1200px; /* 页面最大宽度 → 修改：内容区的最大宽度（越大页面越宽） */
+  --header-height: 70px;         /* 导航栏高度 → 修改：顶部导航栏的高度 */
+  --sidebar-width: 35%;          /* 侧边栏宽度占比 → 修改：侧边栏宽度（如改25%则主栏更宽） */
+  --main-width: 65%;             /* 主内容区宽度占比 → 修改：文章区宽度（需和侧边栏总和100%） */
+
+  /* 【圆角】修改可调整元素圆角大小 */
+  --radius-sm: 8px;     /* 小圆角（头像/小图片）→ 修改：小元素的圆角 */
+  --radius-md: 12px;    /* 中圆角（侧边栏卡片）→ 修改：侧边栏模块的圆角 */
+  --radius-lg: 16px;    /* 大圆角（文章卡片）→ 修改：文章卡片的圆角 */
+  --radius-full: 9999px;/* 全圆角（按钮/标签）→ 修改：圆形按钮/标签的圆角 */
+
+  /* 【过渡动画】修改可调整动画速度 */
+  --transition-fast: 0.2s ease;  /* 快速过渡（链接hover）→ 修改：快速动画的时长（越小越快） */
+  --transition-base: 0.3s ease;  /* 基础过渡（卡片hover）→ 修改：中等动画的时长 */
+  --transition-slow: 0.5s ease;  /* 慢速过渡（图片缩放）→ 修改：慢速动画的时长 */
+}
+
+/* ==================== 全局重置 ==================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* 盒模型：宽高包含内边距/边框 → 修改为content-box则宽高不含内边距 */
+}
+
+html {
+  font-size: var(--font-size-base); /* 绑定基础字号 → 修改var值可全局调整 */
+  scroll-behavior: smooth; /* 平滑滚动（返回顶部）→ 删除则滚动变生硬 */
+}
+
+body {
+  font-family: var(--font-body);    /* 绑定正文字体 → 修改var值可全局换字体 */
+  font-size: var(--font-size-base); /* 绑定基础字号 */
+  line-height: var(--line-height-base); /* 绑定正文行高 */
+  color: var(--color-text-primary); /* 绑定主要文字色 */
+  background-color: var(--color-background); /* 绑定页面背景色 */
+  -webkit-font-smoothing: antialiased; /* 苹果端字体抗锯齿 → 删除则字体边缘模糊 */
+  -moz-osx-font-smoothing: grayscale; /* 火狐端字体抗锯齿 → 删除则字体边缘模糊 */
+}
+
+/* ==================== 排版 ==================== */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading); /* 绑定标题字体 → 修改var值换标题字体 */
+  font-weight: 500; /* 字体粗细（400=常规，700=粗体）→ 修改：标题粗细 */
+  line-height: var(--line-height-heading); /* 绑定标题行高 */
+  color: var(--color-text-primary); /* 绑定标题颜色 */
+  margin-bottom: var(--spacing-md); /* 标题底部间距 → 修改var值调整间距 */
+}
+
+/* 标题字号绑定 → 修改var值可分别调整各层级标题大小 */
+h1 { font-size: var(--font-size-h1); }
+h2 { font-size: var(--font-size-h2); }
+h3 { font-size: var(--font-size-h3); }
+h4 { font-size: var(--font-size-h4); }
+
+p {
+  margin-bottom: var(--spacing-md); /* 段落底部间距 → 修改var值调整段落间距 */
+}
+
+a {
+  color: var(--color-accent); /* 链接默认色 → 修改var值换链接色 */
+  text-decoration: none; /* 去掉下划线 → 添加underline则显示下划线 */
+  transition: color var(--transition-fast); /* 链接颜色过渡 → 删除则hover变色无动画 */
+}
+
+a:hover {
+  color: var(--color-accent-dark); /* 链接hover色 → 修改var值换hover色 */
+}
+
+img {
+  max-width: 100%; /* 图片最大宽度100%（响应式）→ 删除则图片可能溢出 */
+  height: auto; /* 高度自适应 → 固定高度则图片会变形 */
+  display: block; /* 块级显示 → 改为inline则图片下方有空白 */
+}
+
+/* ==================== 导航栏 ==================== */
+.site-header {
+  position: fixed; /* 固定在顶部 → 改为relative则随页面滚动 */
+  top: 0; left: 0; right: 0; /* 占满顶部宽度 */
+  height: var(--header-height); /* 绑定导航栏高度 → 修改var值调整高度 */
+  background-color: rgba(252, 253, 255, 0.9); /* 半透明白色 → 修改rgba值换背景/透明度 */
+  backdrop-filter: blur(10px); /* 毛玻璃效果 → 删除则无模糊背景 */
+  border-bottom: 1px solid var(--color-border); /* 底部边框 → 删除则无边框 */
+  z-index: 1000; /* 层级（确保在最上层）→ 改小则可能被其他元素遮挡 */
+  transition: all var(--transition-base); /* 滚动时的过渡 → 删除则scrolled状态无动画 */
+}
+
+.site-header.scrolled {
+  box-shadow: var(--shadow-light); /* 滚动后添加阴影 → 修改var值换阴影效果 */
+}
+
+.nav-container {
+  max-width: var(--container-max-width); /* 绑定最大宽度 → 修改var值调整导航栏宽度 */
+  margin: 0 auto; /* 水平居中 → 删除则靠左对齐 */
+  height: 100%; /* 占满导航栏高度 */
+  display: flex; /* 弹性布局（横向排列）→ 改为block则元素垂直排列 */
+  align-items: center; /* 垂直居中 → 删除则元素靠上对齐 */
+  justify-content: space-between; /* 两端对齐（Logo-菜单-音乐按钮）→ 改为center则居中 */
+  padding: 0 var(--spacing-lg); /* 左右内边距 → 修改var值调整内边距 */
+}
+
+.nav-logo a {
+  font-family: var(--font-heading); /* 绑定标题字体 → 修改var值换Logo字体 */
+  font-size: 1.5rem; /* Logo字号 → 修改：Logo文字大小 */
+  font-weight: 600; /* Logo粗细 → 改400则变细 */
+  color: var(--color-text-primary); /* Logo颜色 → 修改var值换颜色 */
+}
+
+.nav-menu {
+  display: flex; /* 横向排列菜单项 → 改为block则垂直排列 */
+  list-style: none; /* 去掉列表点 → 删除则显示圆点 */
+  gap: var(--spacing-lg); /* 菜单项间距 → 修改var值调整间距 */
+}
+
+.nav-menu a {
+  font-size: 0.95rem; /* 菜单字号 → 修改：菜单文字大小 */
+  color: var(--color-text-secondary); /* 菜单默认色 → 修改var值换颜色 */
+  padding: var(--spacing-sm) 0; /* 上下内边距 → 修改var值调整点击区域 */
+  position: relative; /* 为伪元素定位 → 删除则下划线效果失效 */
+}
+
+/* 菜单下划线效果（hover显示） */
+.nav-menu a::after {
+  content: ''; /* 伪元素必须有content → 删除则无下划线 */
+  position: absolute; bottom: 0; left: 0; /* 定位在底部 */
+  width: 0; /* 默认宽度0（隐藏）→ 改100%则始终显示 */
+  height: 2px; /* 下划线高度 → 修改：下划线粗细 */
+  background-color: var(--color-accent); /* 下划线颜色 → 修改var值换颜色 */
+  transition: width var(--transition-base); /* 宽度过渡 → 删除则下划线无动画 */
+}
+
+.nav-menu a:hover {
+  color: var(--color-accent); /* 菜单hover色 → 修改var值换颜色 */
+}
+
+.nav-menu a:hover::after {
+  width: 100%; /* hover时显示下划线 → 改50%则只显示一半 */
+}
+
+.music-toggle {
+  background: var(--color-primary); /* 音乐按钮背景 → 修改var值换颜色 */
+  border: none; /* 去掉边框 → 添加则显示边框 */
+  width: 40px; height: 40px; /* 按钮大小 → 修改：按钮宽高 */
+  border-radius: var(--radius-full); /* 圆形按钮 → 修改var值换圆角 */
+  cursor: pointer; /* 鼠标指针（手型）→ 改为default则无手型 */
+  display: flex; align-items: center; justify-content: center; /* 图标居中 */
+  transition: all var(--transition-base); /* 过渡动画 → 删除则hover无效果 */
+}
+
+.music-toggle:hover {
+  background: var(--color-primary-light); /* hover背景 → 修改var值换颜色 */
+  transform: scale(1.05); /* 缩放（放大5%）→ 改1.1则放大10% */
+}
+
+.music-toggle.playing {
+  animation: pulse 2s ease-in-out infinite; /* 播放时呼吸动画 → 删除则无动画 */
+}
+
+/* 呼吸动画关键帧 → 修改数值可调整动画幅度/速度 */
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(140, 182, 230, 0.4); } /* 初始/结束状态 */
+  50% { box-shadow: 0 0 0 10px rgba(140, 182, 230, 0); }     /* 中间状态（扩散） */
+}
+
+/* ==================== 主要布局 ==================== */
+.main-container {
+  max-width: var(--container-max-width); /* 绑定最大宽度 → 修改var值调整内容区宽度 */
+  margin: calc(var(--header-height) + var(--spacing-xl)) auto 0; /* 顶部间距（导航栏+超大间距）→ 修改var值调整间距 */
+  padding: 0 var(--spacing-lg); /* 左右内边距 → 修改var值调整内边距 */
+  display: grid; /* 网格布局（双栏）→ 改为flex则需重新调整宽度 */
+  grid-template-columns: var(--main-width) var(--sidebar-width); /* 双栏宽度占比 → 修改var值调整双栏比例 */
+  gap: var(--spacing-xl); /* 双栏间距 → 修改var值调整间距 */
+  align-items: start; /* 顶部对齐 → 改为center则垂直居中 */
+}
+
+/* ==================== Hero 区域（首页大标题）==================== */
+.hero {
+  margin-top: var(--header-height); /* 顶部间距（导航栏高度）→ 修改var值调整间距 */
+  padding: var(--spacing-xl) 0; /* 上下内边距 → 修改var值调整内边距 */
+  text-align: center; /* 文字居中 → 改为left则靠左对齐 */
+}
+
+.hero-title {
+  font-size: 3rem; /* Hero标题字号 → 修改：大标题大小 */
+  margin-bottom: var(--spacing-md); /* 底部间距 → 修改var值调整间距 */
+  color: var(--color-text-primary); /* 标题颜色 → 修改var值换颜色 */
+}
+
+.hero-subtitle {
+  font-size: 1.25rem; /* 副标题字号 → 修改：副标题大小 */
+  color: var(--color-text-secondary); /* 副标题颜色 → 修改var值换颜色 */
+  margin-bottom: var(--spacing-lg); /* 底部间距 → 修改var值调整间距 */
+}
+
+.hero-description {
+  max-width: 600px; /* 最大宽度 → 修改：描述文字的最大宽度 */
+  margin: 0 auto; /* 水平居中 → 删除则靠左对齐 */
+  color: var(--color-text-secondary); /* 描述颜色 → 修改var值换颜色 */
+  line-height: 1.8; /* 行高 → 修改：描述文字的行间距 */
+}
+
+/* ==================== 文章列表 ==================== */
+.articles-section {
+  padding: var(--spacing-xl) 0; /* 上下内边距 → 修改var值调整内边距 */
+}
+
+.section-title {
+  font-family: var(--font-heading); /* 绑定标题字体 → 修改var值换字体 */
+  font-size: 2rem; /* 板块标题字号 → 修改：板块标题大小 */
+  margin-bottom: var(--spacing-lg); /* 底部间距 → 修改var值调整间距 */
+  text-align: center; /* 文字居中 → 改为left则靠左对齐 */
+  color: var(--color-text-primary); /* 标题颜色 → 修改var值换颜色 */
+}
+
+.articles-grid {
+  display: grid; /* 网格布局（文章卡片）→ 改为flex则需调整换行 */
+  gap: var(--spacing-xl); /* 卡片间距 → 修改var值调整间距 */
+}
+
+.article-card {
+  background: var(--color-card-bg); /* 卡片背景 → 修改var值换颜色 */
+  border-radius: var(--radius-lg); /* 卡片圆角 → 修改var值换圆角 */
+  overflow: hidden; /* 隐藏溢出（图片圆角）→ 删除则图片圆角失效 */
+  box-shadow: var(--shadow-light); /* 卡片阴影 → 修改var值换阴影 */
+  transition: all var(--transition-base); /* 卡片过渡 → 删除则hover无动画 */
+}
+
+.article-card:hover {
+  transform: translateY(-4px); /* 悬浮上移4px → 改-8px则上移更多 */
+  box-shadow: var(--shadow-hover); /* 悬浮阴影 → 修改var值换阴影 */
+}
+
+.article-card-cover {
+  width: 100%; /* 封面宽度100% → 修改则封面宽度变化 */
+  height: 280px; /* 封面高度 → 修改：文章封面图的高度 */
+  overflow: hidden; /* 隐藏溢出（图片缩放）→ 删除则图片缩放时溢出 */
+  position: relative; /* 为遮罩层定位 → 删除则遮罩层失效 */
+}
+
+.article-card-cover img {
+  width: 100%; height: 100%; /* 占满封面容器 */
+  object-fit: cover; /* 图片裁剪（保持比例）→ 改为contain则完整显示（可能留边） */
+  transition: transform var(--transition-slow); /* 图片缩放过渡 → 删除则无动画 */
+}
+
+.article-card:hover .article-card-cover img {
+  transform: scale(1.05); /* 悬浮缩放（放大5%）→ 改1.1则放大10% */
+}
+
+.article-card-overlay {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0; /* 占满封面 */
+  background: linear-gradient(to bottom, transparent 60%, rgba(61, 74, 92, 0.3)); /* 渐变遮罩 → 修改：遮罩颜色/渐变位置 */
+}
+
+.article-card-content {
+  padding: var(--spacing-lg); /* 卡片内边距 → 修改var值调整内边距 */
+}
+
+.article-card-meta {
+  display: flex; /* 横向排列元信息 → 改为block则垂直排列 */
+  gap: var(--spacing-md); /* 元信息间距 → 修改var值调整间距 */
+  margin-bottom: var(--spacing-sm); /* 底部间距 → 修改var值调整间距 */
+  font-size: var(--font-size-small); /* 元信息字号 → 修改var值调整大小 */
+  color: var(--color-text-light); /* 元信息颜色 → 修改var值换颜色 */
+}
+
+.article-card-category {
+  color: var(--color-accent); /* 分类颜色 → 修改var值换颜色 */
+  font-weight: 500; /* 分类粗细 → 改700则加粗 */
+}
+
+.article-card-title {
+  font-family: var(--font-heading); /* 绑定标题字体 → 修改var值换字体 */
+  font-size: 1.5rem; /* 文章标题字号 → 修改：文章标题大小 */
+  margin-bottom: var(--spacing-sm); /* 底部间距 → 修改var值调整间距 */
+}
+
+.article-card-title a {
+  color: var(--color-text-primary); /* 标题颜色 → 修改var值换颜色 */
+}
+
+.article-card-title a:hover {
+  color: var(--color-accent); /* 标题hover色 → 修改var值换颜色 */
+}
+
+.article-card-excerpt {
+  color: var(--color-text-secondary); /* 摘要颜色 → 修改var值换颜色 */
+  line-height: 1.8; /* 行高 → 修改：摘要行间距 */
+  margin-bottom: var(--spacing-md); /* 底部间距 → 修改var值调整间距 */
+  display: -webkit-box; /* 多行省略兼容 */
+  -webkit-line-clamp: 3; /* 最多显示3行 → 改2则显示2行 */
+  -webkit-box-orient: vertical; /* 垂直排列 */
+  overflow: hidden; /* 隐藏溢出 → 删除则无省略号 */
+}
+
+.article-card-footer {
+  display: flex; /* 横向排列 → 改为block则垂直排列 */
+  justify-content: space-between; /* 两端对齐 → 改为center则居中 */
+  align-items: center; /* 垂直居中 → 删除则靠上对齐 */
+  padding-top: var(--spacing-md); /* 顶部内边距 → 修改var值调整间距 */
+  border-top: 1px solid var(--color-divider); /* 顶部分割线 → 删除则无分割线 */
+  font-size: var(--font-size-small); /* 字号 → 修改var值调整大小 */
+  color: var(--color-text-light); /* 颜色 → 修改var值换颜色 */
+}
+
+.article-card-tags {
+  display: flex; /* 横向排列标签 → 改为block则垂直排列 */
+  gap: var(--spacing-sm); /* 标签间距 → 修改var值调整间距 */
+  flex-wrap: wrap; /* 自动换行 → 删除则标签溢出 */
+}
+
+.article-card-tags a {
+  background: var(--color-primary); /* 标签背景 → 修改var值换颜色 */
+  color: var(--color-accent); /* 标签文字色 → 修改var值换颜色 */
+  padding: 4px 12px; /* 标签内边距 → 修改：标签大小 */
+  border-radius: var(--radius-full); /* 圆形标签 → 修改var值换圆角 */
+  font-size: 0.8rem; /* 标签字号 → 修改：标签文字大小 */
+  transition: all var(--transition-fast); /* 标签过渡 → 删除则hover无动画 */
+}
+
+.article-card-tags a:hover {
+  background: var(--color-primary-light); /* hover背景 → 修改var值换颜色 */
+}
+
+/* ==================== 侧边栏 ==================== */
+.sidebar {
+  position: sticky; /* 粘性定位（滚动时固定）→ 改为relative则随页面滚动 */
+  top: calc(var(--header-height) + var(--spacing-lg)); /* 顶部位置（导航栏+大间距）→ 修改var值调整位置 */
+  display: flex; flex-direction: column; /* 垂直排列模块 → 改为row则横向排列 */
+  gap: var(--spacing-lg); /* 模块间距 → 修改var值调整间距 */
+}
+
+.sidebar-widget {
+  background: var(--color-card-bg); /* 模块背景 → 修改var值换颜色 */
+  border-radius: var(--radius-md); /* 模块圆角 → 修改var值换圆角 */
+  padding: var(--spacing-lg); /* 模块内边距 → 修改var值调整内边距 */
+  box-shadow: var(--shadow-light); /* 模块阴影 → 修改var值换阴影 */
+}
+
+.sidebar-widget h4 {
+  font-family: var(--font-heading); /* 绑定标题字体 → 修改var值换字体 */
+  font-size: 1.1rem; /* 模块标题字号 → 修改：侧边栏标题大小 */
+  margin-bottom: var(--spacing-md); /* 底部间距 → 修改var值调整间距 */
+  padding-bottom: var(--spacing-sm); /* 底部内边距 → 修改var值调整间距 */
+  border-bottom: 2px solid var(--color-primary); /* 底部边框 → 删除则无边框 */
+  color: var(--color-text-primary); /* 标题颜色 → 修改var值换颜色 */
+}
+
+/* 作者简介 Widget */
+.author-widget {
+  text-align: center; /* 文字居中 → 改为left则靠左对齐 */
+}
+
+.author-avatar {
+  width: 80px; height: 80px; /* 头像大小 → 修改：作者头像尺寸 */
+  margin: 0 auto var(--spacing-md); /* 底部间距 → 修改var值调整间距 */
+  border-radius: var(--radius-full); /* 圆形头像 → 修改var值换圆角 */
+  overflow: hidden; /* 隐藏溢出 → 删除则头像圆角失效 */
+  box-shadow: var(--shadow-medium); /* 头像阴影 → 修改var值换阴影 */
+}
+
+.author-avatar img {
+  width: 100%; height: 100%; /* 占满头像容器 */
+  object-fit: cover; /* 图片裁剪 → 改为contain则完整显示 */
+}
+
+.author-name {
+  margin-bottom: var(--spacing-sm); /* 底部间距 → 修改var值调整间距 */
+  font-size: 1.2rem; /* 作者名字号 → 修改：作者名大小 */
+}
+
+.author-bio {
+  color: var(--color-text-secondary); /* 简介颜色 → 修改var值换颜色 */
+  font-size: 0.9rem; /* 简介字号 → 修改：简介文字大小 */
+  line-height: 1.6; /* 行高 → 修改：简介行间距 */
+  margin-bottom: var(--spacing-md); /* 底部间距 → 修改var值调整间距 */
+}
+
+.author-stats {
+  display: flex; /* 横向排列统计项 → 改为block则垂直排列 */
+  justify-content: center; /* 居中对齐 → 改为space-between则两端对齐 */
+  gap: var(--spacing-lg); /* 统计项间距 → 修改var值调整间距 */
+}
+
+.stat-item {
+  text-align: center; /* 文字居中 → 改为left则靠左对齐 */
+}
+
+.stat-value {
+  display: block; /* 块级显示 → 改为inline则和标签同行 */
+  font-size: 1.2rem; /* 数值字号 → 修改：统计数值大小 */
+  font-weight: 600; /* 数值粗细 → 改400则变细 */
+  color: var(--color-accent); /* 数值颜色 → 修改var值换颜色 */
+}
+
+.stat-label {
+  font-size: 0.8rem; /* 标签字号 → 修改：统计标签大小 */
+  color: var(--color-text-light); /* 标签颜色 → 修改var值换颜色 */
+}
+
+/* 侧边栏文章列表 Widget */
+.sidebar-articles-list {
+  list-style: none; /* 去掉列表点 → 删除则显示圆点 */
+}
+
+.sidebar-articles-list li {
+  margin-bottom: var(--spacing-md); /* 列表项间距 → 修改var值调整间距 */
+}
+
+.sidebar-articles-list a {
+  display: flex; /* 横向排列（图片+文字）→ 改为block则垂直排列 */
+  gap: var(--spacing-sm); /* 图文间距 → 修改var值调整间距 */
+  color: var(--color-text-secondary); /* 文字颜色 → 修改var值换颜色 */
+  transition: color var(--transition-fast); /* 颜色过渡 → 删除则hover无动画 */
+}
+
+.sidebar-articles-list a:hover {
+  color: var(--color-accent); /* hover颜色 → 修改var值换颜色 */
+}
+
+.sidebar-articles-list img {
+  width: 60px; height: 60px; /* 小图大小 → 修改：侧边栏文章图片尺寸 */
+  border-radius: var(--radius-sm); /* 小图圆角 → 修改var值换圆角 */
+  object-fit: cover; /* 图片裁剪 → 改为contain则完整显示 */
+}
+
+.sidebar-articles-list h5 {
+  font-size: 0.95rem; /* 小标题字号 → 修改：侧边栏文章标题大小 */
+  margin-bottom: 4px; /* 底部间距 → 修改：标题和日期的间距 */
+  line-height: 1.4; /* 行高 → 修改：标题行间距 */
+}
+
+.sidebar-articles-list .date {
+  font-size: 0.8rem; /* 日期字号 → 修改：日期文字大小 */
+  color: var(--color-text-light); /* 日期颜色 → 修改var值换颜色 */
+}
+
+/* 标签云 Widget */
+.tag-cloud {
+  display: flex; /* 横向排列标签 → 改为block则垂直排列 */
+  flex-wrap: wrap; /* 自动换行 → 删除则标签溢出 */
+  gap: var(--spacing-sm); /* 标签间距 → 修改var值调整间距 */
+}
+
+.tag-cloud .tag {
+  background: var(--color-primary); /* 标签背景 → 修改var值换颜色 */
+  color: var(--color-accent); /* 标签文字色 → 修改var值换颜色 */
+  padding: 6px 14px; /* 标签内边距 → 修改：标签大小 */
+  border-radius: var(--radius-full); /* 圆形标签 → 修改var值换圆角 */
+  font-size: 0.85rem; /* 标签字号 → 修改：标签文字大小 */
+  transition: all var(--transition-fast); /* 标签过渡 → 删除则hover无动画 */
+}
+
+.tag-cloud .tag:hover {
+  background: var(--color-accent); /* hover背景 → 修改var值换颜色 */
+  color: white; /* hover文字色 → 修改：标签hover文字颜色 */
+  transform: translateY(-2px); /* hover上移 → 改-4px则上移更多 */
+}
+
+/* ==================== 页脚 ==================== */
+.site-footer {
+  background: var(--color-background-alt); /* 页脚背景 → 修改var值换颜色 */
+  border-top: 1px solid var(--color-border); /* 顶部边框 → 删除则无边框 */
+  margin-top: var(--spacing-xl); /* 顶部间距 → 修改var值调整间距 */
+  padding: var(--spacing-xl) 0; /* 上下内边距 → 修改var值调整内边距 */
+  text-align: center; /* 文字居中 → 改为left则靠左对齐 */
+}
+
+.footer-content {
+  max-width: var(--container-max-width); /* 最大宽度 → 修改var值调整页脚宽度 */
+  margin: 0 auto; /* 水平居中 → 删除则靠左对齐 */
+  padding: 0 var(--spacing-lg); /* 左右内边距 → 修改var值调整内边距 */
+}
+
+.footer-links {
+  display: flex; /* 横向排列链接 → 改为block则垂直排列 */
+  justify-content: center; /* 居中对齐 → 改为space-between则两端对齐 */
+  gap: var(--spacing-lg); /* 链接间距 → 修改var值调整间距 */
+  margin-bottom: var(--spacing-md); /* 底部间距 → 修改var值调整间距 */
+}
+
+.footer-links a {
+  color: var(--color-text-secondary); /* 链接颜色 → 修改var值换颜色 */
+  transition: color var(--transition-fast); /* 颜色过渡 → 删除则hover无动画 */
+}
+
+.footer-links a:hover {
+  color: var(--color-accent); /* hover颜色 → 修改var值换颜色 */
+}
+
+.footer-copyright {
+  color: var(--color-text-light); /* 版权文字色 → 修改var值换颜色 */
+  font-size: 0.9rem; /* 版权字号 → 修改：版权文字大小 */
+}
+
+/* ==================== 返回顶部按钮 ==================== */
+.back-to-top {
+  position: fixed; /* 固定定位 → 改为relative则随页面滚动 */
+  bottom: var(--spacing-lg); /* 底部间距 → 修改var值调整位置 */
+  right: var(--spacing-lg); /* 右侧间距 → 修改var值调整位置 */
+  width: 45px; height: 45px; /* 按钮大小 → 修改：返回顶部按钮尺寸 */
+  background: var(--color-accent); /* 按钮背景 → 修改var值换颜色 */
+  color: white; /* 按钮文字色 → 修改：按钮内文字颜色 */
+  border: none; /* 去掉边框 → 添加则显示边框 */
+  border-radius: var(--radius-full); /* 圆形按钮 → 修改var值换圆角 */
+  font-size: 1.2rem; /* 按钮字号 → 修改：按钮内文字大小 */
+  cursor: pointer; /* 手型指针 → 改为default则无手型 */
+  opacity: 0; /* 默认透明（隐藏）→ 改1则始终显示 */
+  visibility: hidden; /* 默认隐藏 → 改visible则始终显示 */
+  transition: all var(--transition-base); /* 过渡动画 → 删除则显示/隐藏无动画 */
+  box-shadow: var(--shadow-medium); /* 按钮阴影 → 修改var值换阴影 */
+  z-index: 999; /* 层级 → 改小则可能被遮挡 */
+}
+
+.back-to-top.visible {
+  opacity: 1; /* 显示时不透明 → 改0.8则半透明 */
+  visibility: visible; /* 显示 → 改hidden则隐藏 */
+}
+
+.back-to-top:hover {
+  background: var(--color-accent-dark); /* hover背景 → 修改var值换颜色 */
+  transform: translateY(-3px); /* hover上移 → 改-5px则上移更多 */
+}
+
+/* ==================== 动画效果 ==================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0; /* 初始透明 → 改0.5则半透明开始 */
+    transform: translateY(30px); /* 初始下移30px → 改50px则下移更多 */
+  }
+  to {
+    opacity: 1; /* 结束不透明 → 改0.8则半透明结束 */
+    transform: translateY(0); /* 结束回到原位 */
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease forwards; /* 淡入上移动画 → 修改0.6s调整动画时长 */
+}
+
+/* ==================== 响应式设计（适配手机/平板）==================== */
+/* 平板屏幕（1024px以下） */
+@media (max-width: 1024px) {
+  .main-container {
+    grid-template-columns: 1fr; /* 双栏变单栏 → 改为70% 30%则仍双栏但比例调整 */
+  }
+  .sidebar {
+    position: static; /* 取消粘性定位 → 改为sticky则仍固定 */
+  }
+  .nav-menu {
+    gap: var(--spacing-md); /* 菜单间距缩小 → 修改var值调整间距 */
+  }
+}
+
+/* 手机屏幕（768px以下） */
+@media (max-width: 768px) {
+  :root {
+    /* 缩小标题字号（适配手机）→ 修改var值调整手机端字号 */
+    --font-size-h1: 2rem;
+    --font-size-h2: 1.75rem;
+    --font-size-h3: 1.25rem;
+  }
+  .nav-container {
+    padding: 0 var(--spacing-md); /* 导航栏内边距缩小 → 修改var值调整间距 */
+  }
+  .nav-menu {
+    display: none; /* 隐藏导航菜单 → 改为flex则显示 */
+  }
+  .hero-title {
+    font-size: 2rem; /* Hero标题缩小 → 修改：手机端大标题大小 */
+  }
+  .hero-subtitle {
+    font-size: 1rem; /* 副标题缩小 → 修改：手机端副标题大小 */
+  }
+  .article-card-cover {
+    height: 200px; /* 文章封面高度缩小 → 修改：手机端封面高度 */
+  }
+  .author-stats {
+    gap: var(--spacing-md); /* 作者统计项间距缩小 → 修改var值调整间距 */
+  }
+  .footer-links {
+    flex-direction: column; /* 页脚链接垂直排列 → 改为row则横向排列 */
+    gap: var(--spacing-sm); /* 链接间距缩小 → 修改var值调整间距 */
+  }
+}
+
+/* ==================== 工具类（通用样式）==================== */
+.text-center { text-align: center; } /* 文字居中 → 给任意元素加此类则文字居中 */
+.mt-sm { margin-top: var(--spacing-sm); } /* 顶部小间距 → 加此类则顶部有小间距 */
+.mt-md { margin-top: var(--spacing-md); } /* 顶部中间距 → 加此类则顶部有中间距 */
+.mt-lg { margin-top: var(--spacing-lg); } /* 顶部大间距 → 加此类则顶部有大间距 */
+.mb-sm { margin-bottom: var(--spacing-sm); } /* 底部小间距 → 加此类则底部有小间距 */
+.mb-md { margin-bottom: var(--spacing-md); } /* 底部中间距 → 加此类则底部有中间距 */
+.mb-lg { margin-bottom: var(--spacing-lg); } /* 底部大间距 → 加此类则底部有大间距 */
