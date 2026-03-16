@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>加载中...</title>
+  <meta name="description" content="一个莫奈蓝白风格的文艺博客，记录生活中的温柔时刻">
+  <meta name="keywords" content="莫奈,博客,文艺,摄影,生活记录">
+
+  <!-- 样式表 -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- 简单的音乐按钮样式（避免样式缺失导致按钮错位） -->
+  <style>
+    .music-control-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      padding: 10px 16px;
+      background-color: #8CB6E6;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      box-shadow: 0 2px 8px rgba(140, 182, 230, 0.3);
+      transition: all 0.3s ease;
+    }
+    .music-control-btn:hover {
+      background-color: #73A6E6;
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 70px;
+      right: 20px;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <!-- ==================== 导航栏 ==================== -->
+  <header class="site-header" id="header">
+    <nav class="nav-container">
+      <div class="nav-logo">
+        <a href="index.html" id="logoName">博客名称</a>
+      </div>
+      <ul class="nav-menu" id="navMenu">
+      </ul>
+      <button class="music-toggle" id="musicToggle" title="背景音乐">
+        <span class="music-icon">🎵</span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ==================== Hero 区域 ==================== -->
+  <section class="hero">
+    <h1 class="hero-title" id="heroTitle">标题</h1>
+    <p class="hero-subtitle" id="heroSubtitle">副标题</p>
+    <p class="hero-description" id="heroDesc">描述</p>
+  </section>
+
+  <!-- ==================== 主要内容区 ==================== -->
+  <div class="main-container" id="articles">
+    <!-- 左侧主栏 - 文章列表 -->
+    <main class="articles-section">
+      <h2 class="section-title">最新文章</h2>
+      <div class="articles-grid" id="articlesGrid"></div>
+    </main>
+
+    <!-- 右侧边栏 -->
+    <aside class="sidebar">
+      <!-- 作者简介 -->
+      <div class="sidebar-widget author-widget" id="authorWidget"></div>
+
+      <!-- 最新文章 -->
+      <div class="sidebar-widget">
+        <h4>最新文章</h4>
+        <ul class="sidebar-articles-list" id="sidebarArticles"></ul>
+      </div>
+
+      <!-- 专题图集入口 -->
+      <div class="sidebar-widget gallery-widget">
+        <h4>专题图集</h4>
+        <a href="gallery.html" class="gallery-preview">
+          <img src="assets/gallery-covers/blue-dream.jpg" alt="蓝色梦境">
+          <div class="gallery-info">
+            <h5>蓝色梦境</h5>
+            <span>8 张照片</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- 标签云 -->
+      <div class="sidebar-widget tags-widget">
+        <h4>热门标签</h4>
+        <div class="tag-cloud" id="tagCloud"></div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ==================== 页脚 ==================== -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-links" id="footerLinks"></div>
+      <p class="footer-copyright" id="copyright">© 2024 博客名称</p>
+    </div>
+  </footer>
+
+  <!-- 背景音乐 -->
+  <div class="music-player" id="musicPlayer">
+    <audio id="bgMusic" loop preload="metadata"></audio>
+    <!-- 音乐控制按钮 -->
+    <button class="music-control-btn" id="playMusicBtn">
+      <span id="musicIcon">🎵 播放音乐</span>
+    </button>
+  </div>
+
+  <!-- 返回顶部按钮 -->
+  <button class="back-to-top" id="backToTop" title="返回顶部">↑</button>
+
+  <!-- 先加载配置 → 再加载主脚本 -->
+  <script src="config.js"></script>
+  <script src="js/main.js"></script>
+
+  <!-- 自动渲染全部内容 -->
+  <script>
+    // 网站标题
+    document.title = CONFIG.site.name + " - " + CONFIG.site.subtitle;
+    document.querySelector('meta[name="description"]').content = CONFIG.site.description;
+    document.querySelector('meta[name="keywords"]').content = CONFIG.seo.keywords;
+
+    // Logo
+    document.getElementById("logoName").innerText = CONFIG.site.name;
+
+    // Hero
+    document.getElementById("heroTitle").innerText = CONFIG.site.name;
+    document.getElementById("heroSubtitle").innerText = CONFIG.site.subtitle;
+    document.getElementById("heroDesc").innerText = CONFIG.author.bio.replace(/<br>/g, " ");
+
+    // 导航菜单
+    const navMenu = document.getElementById("navMenu");
+    CONFIG.navigation.forEach(item => {
+      navMenu.innerHTML += `
+        <li><a href="${item.url}" class="${item.url === location.pathname.split('/').pop() ? 'active' : ''}">${item.name}</a></li>
+      `;
+    });
+
+    // 文章列表
+    const articlesGrid = document.getElementById("articlesGrid");
+    CONFIG.articles.forEach(article => {
+      articlesGrid.innerHTML += `
+        <article class="article-card">
+          <a href="articles/article-${article.id}.html" class="article-card-cover">
+            <img src="${article.cover}" alt="${article.coverAlt}" loading="lazy">
+            <span class="article-card-overlay"></span>
+          </a>
+          <div class="article-card-content">
+            <div class="article-card-meta">
+              <span class="article-card-category">${article.category}</span>
+              <span>${article.date}</span>
+              <span>${article.readTime}</span>
+            </div>
+            <h3 class="article-card-title">
+              <a href="articles/article-${article.id}.html">${article.title}</a>
+            </h3>
+            <p class="article-card-excerpt">${article.excerpt}</p>
+            <div class="article-card-footer">
+              <div class="article-card-tags">
+                ${article.tags.map(t => `<a href="#">${t}</a>`).join('')}
+              </div>
+              <span class="article-card-views">${article.views} 次阅读</span>
+            </div>
+          </div>
+        </article>
+      `;
+    });
+
+    // 侧边栏最新文章
+    const sidebarArticles = document.getElementById("sidebarArticles");
+    CONFIG.articles.slice(0,3).forEach(art => {
+      sidebarArticles.innerHTML += `
+        <li>
+          <a href="articles/article-${art.id}.html">
+            <img src="${art.cover}" alt="${art.title}">
+            <div>
+              <h5>${art.title}</h5>
+              <span class="date">${art.date}</span>
+            </div>
+          </a>
+        </li>
+      `;
+    });
+
+    // 作者卡片
+    const author = CONFIG.author;
+    document.getElementById("authorWidget").innerHTML = `
+      <div class="author-avatar">
+        <img src="${author.avatar}" alt="${author.name}" loading="lazy">
+      </div>
+      <h4 class="author-name">${author.name}</h4>
+      <p class="author-bio">${author.bio}</p>
+      <div class="author-stats">
+        <div class="stat-item">
+          <span class="stat-value">${author.stats.articles}</span>
+          <span class="stat-label">文章</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">${author.stats.galleries}</span>
+          <span class="stat-label">图集</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">${author.stats.words}</span>
+          <span class="stat-label">字数</span>
+        </div>
+      </div>
+    `;
+
+    // 标签云
+    const tagCloud = document.getElementById("tagCloud");
+    CONFIG.tags.forEach(tag => {
+      tagCloud.innerHTML += `<a href="#" class="tag">${tag.name}</a>`;
+    });
+
+    // 页脚
+    document.getElementById("copyright").innerText = CONFIG.footer.copyright;
+
+    // ==================== 背景音乐修复核心代码 ====================
+    const audio = document.getElementById("bgMusic");
+    const playBtn = document.getElementById("playMusicBtn");
+    const musicIcon = document.getElementById("musicIcon");
+    let isPlaying = false;
+
+    // 1. 设置音乐文件路径（使用配置文件中的相对路径）
+    if (CONFIG.music.enabled && CONFIG.music.playlist.length > 0) {
+      audio.src = CONFIG.music.playlist[0].url;
+      audio.volume = CONFIG.music.volume || 0.5;
+    }
+
+    // 2. 播放/暂停切换逻辑
+    function toggleMusic() {
+      if (isPlaying) {
+        audio.pause();
+        musicIcon.textContent = "🎵 播放音乐";
+        isPlaying = false;
+      } else {
+        // 解决浏览器自动播放限制：必须通过用户交互触发
+        audio.play()
+          .then(() => {
+            musicIcon.textContent = "🎵 暂停音乐";
+            isPlaying = true;
+          })
+          .catch(err => {
+            alert("音乐播放失败：\n" + err.message + "\n\n请检查音乐文件路径是否正确！");
+            console.error("音乐播放错误：", err);
+          });
+      }
+    }
+
+    // 绑定按钮点击事件
+    playBtn.addEventListener("click", toggleMusic);
+    // 兼容原有导航栏音乐按钮
+    const musicToggle = document.getElementById("musicToggle");
+    if (musicToggle) {
+      musicToggle.addEventListener("click", toggleMusic);
+    }
+
+    // 3. 音乐播放状态监听（如音乐播放完毕、出错等）
+    audio.addEventListener("error", (e) => {
+      alert("音乐文件加载失败！\n请检查：\n1. 文件路径是否正确\n2. 文件格式是否为MP3\n3. 文件是否存在");
+      console.error("音频加载错误：", e);
+    });
+
+    audio.addEventListener("ended", () => {
+      isPlaying = false;
+      musicIcon.textContent = "🎵 播放音乐";
+    });
+  </script>
+</body>
+</html>

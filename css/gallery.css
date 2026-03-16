@@ -1,0 +1,184 @@
+/**
+ * ============================================================
+ * 专题图集页样式
+ * ============================================================
+ */
+
+/* ==================== 图集 Hero 区域 ==================== */
+.gallery-hero {
+  margin-top: var(--header-height);
+  padding: var(--spacing-xl) 0;
+  text-align: center;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-background-alt) 100%);
+}
+
+.gallery-hero h1 {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-text-primary);
+}
+
+.gallery-hero p {
+  color: var(--color-text-secondary);
+  font-size: 1.1rem;
+}
+
+/* ==================== 图集网格 ==================== */
+.gallery-section {
+  padding: var(--spacing-xl) 0;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.gallery-card {
+  background: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-light);
+  transition: all var(--transition-base);
+  cursor: pointer;
+}
+
+.gallery-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+}
+
+.gallery-card-cover {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+
+.gallery-card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.gallery-card:hover .gallery-card-cover img {
+  transform: scale(1.08);
+}
+
+.gallery-card-overlay {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  backdrop-filter: blur(10px);
+}
+
+.gallery-card-content {
+  padding: var(--spacing-md);
+}
+
+.gallery-card-title {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-text-primary);
+}
+
+.gallery-card-description {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-sm);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.gallery-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--color-divider);
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+}
+
+.gallery-card-views {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.gallery-card-views::before {
+  content: "👁";
+  font-size: 0.9rem;
+}
+
+/* ==================== 侧边栏图集 Widget ==================== */
+.sidebar-gallery-list {
+  list-style: none;
+}
+
+.sidebar-gallery-list li {
+  margin-bottom: var(--spacing-md);
+}
+
+.sidebar-gallery-list a {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+  padding: var(--spacing-sm);
+  background: var(--color-background-alt);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.sidebar-gallery-list a:hover {
+  background: var(--color-primary);
+}
+
+.sidebar-gallery-list img {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+.sidebar-gallery-list h5 {
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+  color: var(--color-text-primary);
+}
+
+.sidebar-gallery-list span {
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+}
+
+/* ==================== 响应式 - 图集页 ==================== */
+@media (max-width: 768px) {
+  .gallery-hero h1 {
+    font-size: 2rem;
+  }
+
+  .gallery-hero p {
+    font-size: 1rem;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+  }
+
+  .gallery-card-cover {
+    height: 180px;
+  }
+}
